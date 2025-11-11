@@ -4,7 +4,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
-
+use App\Http\Controllers\NpiController;
+use App\Http\Controllers\NpinumberController;
+// use App\Http\Controllers\NpinumberController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,6 +30,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
     Route::get('cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 });
+// addaded by imran NIAZ 
+
+Route::get('/npi', [NpiController::class, 'index'])->name('npi.index');
+Route::post('/npi', [NpiController::class, 'store'])->name('npi.store');
+
+
+Route::get('/npiupload', [NpinumberController::class, 'uploadPage'])->name('npi.upload');
+Route::post('/npiupload', [NpinumberController::class, 'bulkUpload'])->name('npi.bulk');
+
 
 require __DIR__.'/auth.php';
 
