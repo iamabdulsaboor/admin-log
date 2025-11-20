@@ -39,6 +39,9 @@ Route::post('/npi', [NpiController::class, 'store'])->name('npi.store');
 Route::get('/npiupload', [NpinumberController::class, 'uploadPage'])->name('npi.upload');
 Route::post('/npiupload', [NpinumberController::class, 'bulkUpload'])->name('npi.bulk');
 
+Route::match(['get','post'], '/npiupload', [NpinumberController::class, 'uploadPage'])->name('npi.upload');
+Route::post('/npi/mark-used', [NpinumberController::class, 'markUsed'])->name('npi.markUsed');
+Route::match(['get','post'], '/npiupload', [NpinumberController::class, 'uploadPage'])->name('npi.upload');
 
 require __DIR__.'/auth.php';
 

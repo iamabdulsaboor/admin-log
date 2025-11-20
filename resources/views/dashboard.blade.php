@@ -14,4 +14,6 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+    @include('npi.upload')
+    
+ </x-app-layout>

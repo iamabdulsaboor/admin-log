@@ -9,10 +9,30 @@ use Illuminate\Support\Facades\Http;
 class NpiController extends Controller
 {
     public function index()
-    {
-        $records = NpiRecord::latest()->get();
-        return view('npi.index', compact('records'));
+{
+    // 10 records per page, ordered latest first
+    $records = NpiRecord::latest()->paginate(10);
+    return view('npi.index', compact('records'));
+}
+
+
+public function search(Request $request)
+{
+    $query = $request->input('query');
+
+    if (!$query) {
+        return back()->with('error', 'Please enter a search value.');
     }
+
+    $results = NpiRecord::where('npi_number', 'LIKE', "%{$query}%")
+        ->orWhere('organization_name', 'LIKE', "%{$query}%")
+        ->orWhere('authorized_official', 'LIKE', "%{$query}%")
+        ->orWhere('taxonomy_desc', 'LIKE', "%{$query}%")
+        ->paginate(10); // Use paginate here too
+
+    return view('npi.index', compact('results'));
+}
+
 
     public function store(Request $request)
     {
