@@ -20,5 +20,12 @@ class NpiRecord extends Model
         'state',
         'postal_code',
         'taxonomy_desc',
+
+        // --- Tracking Fields ---
+        'is_called',        // boolean: has the lead been called at least once
+        'call_count',       // number of calls made
+        'last_called_at',   // datetime of the last call
+        'called_by',        // agent or user name
+        'call_notes',       // notes from the call
     ];
 }
