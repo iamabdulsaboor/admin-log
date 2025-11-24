@@ -71,5 +71,67 @@
         text-align: left;
     }
 </style>
+<!-- Modal -->
+<div id="callModal"
+    class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white p-6 rounded shadow-lg w-96">
+        <h2 class="text-xl font-semibold mb-4">Update Call Notes</h2>
+
+        <textarea id="callNotes" class="w-full border p-3 rounded"
+                  placeholder="Enter call notes..."></textarea>
+
+        <div class="flex justify-end gap-3 mt-4">
+            <button type="button" onclick="closeCallModal()"
+                    class="px-4 py-2 bg-gray-400 text-white rounded">
+                Cancel
+            </button>
+
+            <button onclick="saveCall()"
+                    class="px-4 py-2 bg-blue-600 text-white rounded">
+                Save
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let activeID = null;
+
+    function openCallModal(id) {
+        activeID = id;
+        document.getElementById('callModal').classList.remove('hidden');
+    }
+
+    function closeCallModal() {
+        document.getElementById('callModal').classList.add('hidden');
+        activeID = null;
+    }
+
+    function saveCall() {
+        let notes = document.getElementById('callNotes').value;
+
+        fetch(`/npi/call/${activeID}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({ call_notes: notes })
+        })
+        .then(res => res.json())
+        .then(data => {
+            // update UI instantly
+            document.getElementById(`calledStatus-${activeID}`).innerText = "Called";
+            document.getElementById(`calledStatus-${activeID}`).className =
+                "px-3 py-1 rounded text-sm bg-green-600 text-white";
+
+            document.getElementById(`callCount-${activeID}`).innerText = data.call_count;
+            document.getElementById(`lastCalled-${activeID}`).innerText = data.last_called_at;
+
+            closeCallModal();
+        });
+    }
+</script>
+
 </body>
 </html>

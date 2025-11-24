@@ -42,6 +42,7 @@ Route::post('/npiupload', [NpinumberController::class, 'bulkUpload'])->name('npi
 Route::match(['get','post'], '/npiupload', [NpinumberController::class, 'uploadPage'])->name('npi.upload');
 Route::post('/npi/mark-used', [NpinumberController::class, 'markUsed'])->name('npi.markUsed');
 Route::match(['get','post'], '/npiupload', [NpinumberController::class, 'uploadPage'])->name('npi.upload');
+Route::post('/npi/call/{id}', [\App\Http\Controllers\NpiController::class, 'updateCall']);
 
 require __DIR__.'/auth.php';
 
